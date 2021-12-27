@@ -14,7 +14,7 @@ This program is only tested in a Windows environment. To run this program, you n
 # Usage
 Type -h parameter only will be able obtain all parameter references:
 ```
->python3 vaccine-scanner.py -h
+python3 vaccine-scanner.py -h
 usage: vaccine-scanner.py [-h] [-d] [-r] -n {1,2,3} -c HCN -v VCODE -s SCN -b DOB -p POSTAL [-e EMAIL] [-m CELLPHONE] [-r50] [-r100] [-r200] [-r500]
 
 Ontario vaccine reservation bots.

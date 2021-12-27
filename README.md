@@ -1,7 +1,7 @@
 # Overview 
-This is a crawler robot program trying to scan Canada Ontario provincal COVID-19 Vaccine revervation system, obtain most up-to-date available slot for the people who entitle to ontario vaccination program. Hope this small program can help people to relief from the threat by COVID-19 virus, have a healthy and happy life. 
+This is a crawler robot program used to scan Canada Ontario provincal COVID-19 Vaccine revervation system, obtain the most recent available slot for the people who are ellegible for Ontario's vaccination program. Hope this small program gives people to relief to the threat of COVID-19 and a healthy, happy life. 
 
-Note that, this program is using regular and legal web interface to access the reservation system, simulate human normal browsing behaviors; however, if you have been able to find your expected reservation, please stop running it to give out access bandwidth to others needed. 
+Note that this program uses regular and legal web interface to access the reservation system and simulates normal browsing behaviors. However, if you have found your expected reservation, please stop running it to give out access bandwidth to others. 
 
 # Prereq
 This program is only tested in a Windows environment. To run this program, you need to install following softwares:
@@ -73,6 +73,6 @@ INFO:root:>> (PPHU - Healthy Planet Arena (Jan.17-21)): 5 - 94 time slots availa
 You can open a new browser follow the offical reservation procedure locate the selected. 
 
 # Disclaimer
-This program is inspired by the needs of the vaccination to fight with COVID-19 Omicorn variant. Heard enough people suffering and pulling hair to find the vaccination opportunity to void from the fear of the virus. If this program is offencing or voilating any regulation, please open a ticket. It will be taken down with no time. 
+This program was created for the need to fight the COVID-19 Omicorn variant. Heard too much news of people suffering when looking for a vaccination opportunity. If this program offends any people or violates any regulation, please open a ticket. It will be taken down with no time. 
 
-God bless everybody... 
+God bless everybody and good luck!

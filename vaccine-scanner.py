@@ -171,6 +171,7 @@ while True:
           summary()
         else:
           continue
+        
       else:
         btn=h.find_element(By.XPATH, "..")
         btn.click()
@@ -200,8 +201,6 @@ while True:
           "slotStartText": slotstartText
         })
     
-        # time.sleep(2)
-        # browser.execute_script("window.history.go(-1)")
         browser.back()
         time.sleep(2)
 

@@ -9,6 +9,8 @@ parser = argparse.ArgumentParser(description='Ontario vaccine reservation bots.'
 parser.add_argument("-d", "--debug", dest='isDebug', action='store_true', help="Turn on debug mode.")
 parser.add_argument("-r", "--reschedule", dest="isReschedule", action='store_true', help="Reschedule existing reservation. Ignore this option if you do NOT have any active reservation (reserved but not completed). In another word, if you are looking for a new vaccine reservation, IGNORE this option.")
 parser.add_argument("-n", "--number-of-doses", type=str, dest="dose", action="store", default="1", choices=["1", "2", "3"], help="The does sequence number.", required=True)
+parser.add_argument("-l", "--number-of-loops", type=int, dest="loopCount", action="store", default="1", help="How many times to scan the reservations.")
+
 # parser.add_argument("-1", "--first-doses", dest="dose", action="store_const", const="1", help="This is for the FIRST dose reservation.")
 # parser.add_argument("-2", "--second-doses", dest="dose", action="store_const", const="2", help="This is for the SECOND dose reservation.")
 # parser.add_argument("-3", "--third-doses", dest="dose", action="store_const", const="3", help="This is for the THIRD dose reservation.")
@@ -32,11 +34,13 @@ if args.isDebug:
 else:  
   logging.basicConfig(level=logging.INFO)
 
-
 if args.r != None:
   r=args.r
 else:
   r="25"
+
+global lCount
+lCount=args.loopCount
 
 dose=args.dose
 hcn=args.hcn
@@ -47,8 +51,9 @@ postal=args.postal
 email=args.email
 cellphone=args.cellphone
 
-
-browser=webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_experimental_option('excludeSwitches', ['enable-logging'])
+browser=webdriver.Chrome(options=options)
 browser.get("https://covid19.ontariohealth.ca/")
 
 #
@@ -76,6 +81,7 @@ def wait_for_text(txt):
       time.sleep(5)
       logging.debug("Waiting for text \"{}\" ...".format(txt))
 
+# accept terms
 acptTerm=browser.find_element(By.ID, 'home_acceptTerm1_label')
 acptTerm.click()
 cntButton=browser.find_element(By.ID, "continue_button")
@@ -136,13 +142,27 @@ vc=[]
 vcList=[]
 
 def summary():
-  logging.info("\n\nSummary: ")
+  global lCount
+  vcs=[]
   for j in range(len(vc)):
     if vcList[j]["vcCnt"] > 0:
-      logging.info(">> {}: {} - {}. {}".format(vc[j], vcList[j]["vcCnt"], vcList[j]["slotText"], vcList[j]["slotStartText"]))
+      vcs.append(vcList[j])
+  logging.info("\n\n")
+  logging.info("###################################################################################################")
+  logging.info("Summary: ")
+  if len(vcs)>0:
+    for vc1 in vcs:
+      logging.info(">> {}: {} - {}. {}".format(vc1["vc"], vc1["vcCnt"], vc1["slotText"], vc1["slotStartText"]))
+  else:
+    logging.info("!!! NO VACCINE AVAILABLE FOR NOW, try again later or enlarge the searching range !!!")
+  logging.info("###################################################################################################")
+  lCount -= 1
+  if lCount <= 0:
+    quit()
+
+  logging.info("\n\nRescan .... ")
   vc.clear()
   vcList.clear()
-  logging.info("\n\nRescan .... ")
   time.sleep(10)
 
 while True:

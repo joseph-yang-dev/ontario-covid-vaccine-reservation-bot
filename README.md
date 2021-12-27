@@ -72,7 +72,13 @@ INFO:root:>> (PPHU - Healthy Planet Arena (Jan.17-21)): 5 - 94 time slots availa
 
 You can open a new browser follow the offical reservation procedure locate the selected. 
 
+The program will loop infinitely. To exit the program you can hit "ctl-c" or just close the CLI Windows. 
+
 # Disclaimer
 This program was created for the need to fight the COVID-19 Omicorn variant. Heard too much news of people suffering when looking for a vaccination opportunity. If this program offends any people or violates any regulation, please open a ticket in https://github.com/joseph-yang-dev/ontario-covid-vaccine-reservation-bot/issues. It will be taken down with no time. 
 
+This code was just created for instant needs and educational. No warranty, use on your own risk. And the creator does NOT take any responsibility from any consequence of usage. However, still welcome to open an issue ticket here to let us know your opinion and improvement suggestion.
+
 God bless everybody and good luck!
+
+Boxing Day of 2021.

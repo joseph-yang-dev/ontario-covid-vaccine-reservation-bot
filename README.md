@@ -42,12 +42,16 @@ optional arguments:
   -r50, --in-50-km      Search with 50KM range.
   -r100, --in-100-km    Search with 100KM range.
   -r200, --in-200-km    Search with 200KM range.
-  -r500, --in-500-km    Search with 500KM range.```
+  -r500, --in-500-km    Search with 500KM range.
+  ```
+
 
 If passing in proper parameters and values as following example, a chrome browser window will pop and simulate all regular reservation process on behalf of the provide health card owner.
+
 ```
 $ python3 vaccine-scanner.py -n 3 -c 1234-567-890 -v AB -s LV1234567 -b 1980-01-02 -p M1N-2J3 -r50
 ```
+
 
 Note that:
 1. This program is only helping you to scan the system for any availablity with the specific range, however, will NOT reserve the spot for you. In order to complete the reservation, you have to complete the booking by taking over the pop-up chrome browser window, quickly complete the rest of reservation process. 

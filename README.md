@@ -8,8 +8,7 @@ This program is only tested in a Windows environment. To run this program, you n
 - Chrome browser: https://www.google.com/intl/en_ca/chrome/
 - Chrome driver: https://chromedriver.chromium.org/downloads
 - python 3.x: https://www.python.org/downloads/
-- python selenum: https://selenium-python.readthedocs.io/installation.html
-
+- python selenium module: https://selenium-python.readthedocs.io/installation.html
 
 # Usage
 This program can be run as a normal python application. Using -h parameter only will be able obtain all parameter references:

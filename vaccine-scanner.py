@@ -28,13 +28,13 @@ cellphone=None
 #
 def wait_for_element_by(e_by, e_key):
   while True:
-      try:
-        browser.find_element(e_by, e_key)
-        logging.debug("Element {} is here.".format(e_key))
-        break
-      except common.exceptions.NoSuchElementException:
-          time.sleep(5)
-          logging.debug("Waiting for {} ...".format(e_key))
+    try:
+      browser.find_element(e_by, e_key)
+      logging.debug("Element {} is here.".format(e_key))
+      break
+    except common.exceptions.NoSuchElementException:
+        time.sleep(5)
+        logging.debug("Waiting for {} ...".format(e_key))
 
 #
 def wait_for_text(txt):
@@ -79,6 +79,55 @@ def summary():
   vcList.clear()
   time.sleep(10)
 
+# initialize
+def init():
+  global r, lCount, hcn, dose, vcode, scn, dob, postal, email, cellphone, browser
+  parser = argparse.ArgumentParser(description='Ontario vaccine reservation bots.')
+  parser.add_argument("-d", "--debug", dest='isDebug', action='store_true', help="Turn on debug mode.")
+  parser.add_argument("-r", "--reschedule", dest="isReschedule", action='store_true', help="Reschedule existing reservation. Ignore this option if you do NOT have any active reservation (reserved but not completed). In another word, if you are looking for a new vaccine reservation, IGNORE this option.")
+  parser.add_argument("-n", "--number-of-doses", type=str, dest="dose", action="store", default="1", choices=["1", "2", "3"], help="The does sequence number.", required=True)
+  parser.add_argument("-l", "--number-of-loops", type=int, dest="loopCount", action="store", default="1", help="How many times to scan the reservations.")
+  # parser.add_argument("-1", "--first-doses", dest="dose", action="store_const", const="1", help="This is for the FIRST dose reservation.")
+  # parser.add_argument("-2", "--second-doses", dest="dose", action="store_const", const="2", help="This is for the SECOND dose reservation.")
+  # parser.add_argument("-3", "--third-doses", dest="dose", action="store_const", const="3", help="This is for the THIRD dose reservation.")
+  parser.add_argument("-c", "-hcn", dest="hcn", action="store", type=str, help="Ontario health card number, in \"xxxx-xxx-xxx\"(10 digits) format.", required=True)
+  parser.add_argument("-v", "--vcode", dest="vcode", action="store", type=str, help="Ontario health card number verificiation code in \"XX\"(2 alphabet codes).", required=True)
+  parser.add_argument("-s", "--scn", dest="scn", action="store", type=str, help="Ontario health card security code(can be found in the back) in \"XXNNNNNNN\"(2 alphabet and 7 digits combination).", required=True)
+  parser.add_argument("-b", "--dob", dest="dob", action="store", type=str, help="Date of birth in \"yyyy-mm-dd\" format.", required=True)
+  parser.add_argument("-p", "--postal", dest="postal", action="store", type=str, help="Postal code (match to healthcard) in \"A0B-1C3\" format.", required=True)
+  parser.add_argument("-e", "--email", dest="email", action="store", type=str, help="Email address to receive confimration and notification. Only needed for the fist dose reservation.")
+  parser.add_argument("-m", "--cellphone", dest="cellphone", action="store", type=str, help="Mobile phone to receive confirmation and notification. Only needed for the fist dose reservation.")
+  parser.add_argument("-r50", "--in-50-km", dest="r", action="store_const", const="50", help="Search with 50KM range.")
+  parser.add_argument("-r100", "--in-100-km", dest="r", action="store_const", const="100", help="Search with 100KM range.")
+  parser.add_argument("-r200", "--in-200-km", dest="r", action="store_const", const="200", help="Search with 200KM range.")
+  parser.add_argument("-r500", "--in-500-km", dest="r", action="store_const", const="500", help="Search with 500KM range.")
+  args = parser.parse_args()
+  
+  if args.isDebug:
+    logging.basicConfig(level=logging.DEBUG)
+  else:  
+    logging.basicConfig(level=logging.INFO)
+  
+  if args.r != None:
+    r=args.r
+  
+  lCount=args.loopCount
+  
+  dose=args.dose
+  hcn=args.hcn
+  vcode=args.vcode
+  scn=args.scn
+  dob=args.dob
+  postal=args.postal
+  email=args.email
+  cellphone=args.cellphone
+
+  options = webdriver.ChromeOptions()
+  options.add_experimental_option('excludeSwitches', ['enable-logging'])
+  browser=webdriver.Chrome(options=options)
+  browser.get("https://covid19.ontariohealth.ca/")
+
+# navigate in vaccine reservation website
 def navigate():
   # accept terms
   acptTerm=browser.find_element(By.ID, 'home_acceptTerm1_label')
@@ -130,6 +179,7 @@ def navigate():
   
   wait_for_text("Select a Vaccination Centre Location")
   
+# scan vaccine availability
 def scan_vaccination():  
   # change range to 50/100/200
   if r != "25":
@@ -210,59 +260,12 @@ def scan_vaccination():
         if i == entryCount-1:
           summary()
 
-def init():
-  global r, lCount, hcn, dose, vcode, scn, dob, postal, email, cellphone, browser
-  parser = argparse.ArgumentParser(description='Ontario vaccine reservation bots.')
-  parser.add_argument("-d", "--debug", dest='isDebug', action='store_true', help="Turn on debug mode.")
-  parser.add_argument("-r", "--reschedule", dest="isReschedule", action='store_true', help="Reschedule existing reservation. Ignore this option if you do NOT have any active reservation (reserved but not completed). In another word, if you are looking for a new vaccine reservation, IGNORE this option.")
-  parser.add_argument("-n", "--number-of-doses", type=str, dest="dose", action="store", default="1", choices=["1", "2", "3"], help="The does sequence number.", required=True)
-  parser.add_argument("-l", "--number-of-loops", type=int, dest="loopCount", action="store", default="1", help="How many times to scan the reservations.")
-  # parser.add_argument("-1", "--first-doses", dest="dose", action="store_const", const="1", help="This is for the FIRST dose reservation.")
-  # parser.add_argument("-2", "--second-doses", dest="dose", action="store_const", const="2", help="This is for the SECOND dose reservation.")
-  # parser.add_argument("-3", "--third-doses", dest="dose", action="store_const", const="3", help="This is for the THIRD dose reservation.")
-  parser.add_argument("-c", "-hcn", dest="hcn", action="store", type=str, help="Ontario health card number, in \"xxxx-xxx-xxx\"(10 digits) format.", required=True)
-  parser.add_argument("-v", "--vcode", dest="vcode", action="store", type=str, help="Ontario health card number verificiation code in \"XX\"(2 alphabet codes).", required=True)
-  parser.add_argument("-s", "--scn", dest="scn", action="store", type=str, help="Ontario health card security code(can be found in the back) in \"XXNNNNNNN\"(2 alphabet and 7 digits combination).", required=True)
-  parser.add_argument("-b", "--dob", dest="dob", action="store", type=str, help="Date of birth in \"yyyy-mm-dd\" format.", required=True)
-  parser.add_argument("-p", "--postal", dest="postal", action="store", type=str, help="Postal code (match to healthcard) in \"A0B-1C3\" format.", required=True)
-  parser.add_argument("-e", "--email", dest="email", action="store", type=str, help="Email address to receive confimration and notification. Only needed for the fist dose reservation.")
-  parser.add_argument("-m", "--cellphone", dest="cellphone", action="store", type=str, help="Mobile phone to receive confirmation and notification. Only needed for the fist dose reservation.")
-  parser.add_argument("-r50", "--in-50-km", dest="r", action="store_const", const="50", help="Search with 50KM range.")
-  parser.add_argument("-r100", "--in-100-km", dest="r", action="store_const", const="100", help="Search with 100KM range.")
-  parser.add_argument("-r200", "--in-200-km", dest="r", action="store_const", const="200", help="Search with 200KM range.")
-  parser.add_argument("-r500", "--in-500-km", dest="r", action="store_const", const="500", help="Search with 500KM range.")
-  args = parser.parse_args()
-  
-  if args.isDebug:
-    logging.basicConfig(level=logging.DEBUG)
-  else:  
-    logging.basicConfig(level=logging.INFO)
-  
-  if args.r != None:
-    r=args.r
-  
-  lCount=args.loopCount
-  
-  dose=args.dose
-  hcn=args.hcn
-  vcode=args.vcode
-  scn=args.scn
-  dob=args.dob
-  postal=args.postal
-  email=args.email
-  cellphone=args.cellphone
-
-  options = webdriver.ChromeOptions()
-  options.add_experimental_option('excludeSwitches', ['enable-logging'])
-  browser=webdriver.Chrome(options=options)
-  browser.get("https://covid19.ontariohealth.ca/")
-
-
+# main process
 def main():
   init()
   navigate()
   scan_vaccination()
-  
 
+# entry point  
 if __name__ == "__main__":
     main()

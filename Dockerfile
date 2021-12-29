@@ -8,4 +8,4 @@ RUN python3 -m pip install selenium
 
 USER seluser
 COPY *.py .
-ENTRYPOINT ["python3", "vaccine-scanner.py"]
+ENTRYPOINT ["python3", "vaccine-scanner.py", "--headless"]

@@ -4,19 +4,24 @@ This is a crawler robot program used to scan Canada Ontario provincal COVID-19 V
 Note that this program uses regular and legal web interface to access the reservation system and simulates normal browsing behaviors. However, if you have found your expected reservation, please stop running it to give out access bandwidth to others. 
 
 # Prerequisite
+## Interactively
 This program is only tested in a Windows environment. To run this program, you need to install following softwares:
 - Chrome browser: https://www.google.com/intl/en_ca/chrome/
 - Chrome driver: https://chromedriver.chromium.org/downloads
 - python 3.x: https://www.python.org/downloads/
 - python selenium module: https://selenium-python.readthedocs.io/installation.html
 
+## Silently
+This program is also dockerized. All you need is a docker engine capable of running x86 Linux docker images. No additional dependent softare is required to run this program silently.
+
 # Usage
+## Interactively
 This program can be run as a normal python application. Using -h parameter only will be able obtain all parameter references:
 ```
 $ python3 vaccine-scanner.py -h
 usage: vaccine-scanner.py [-h] [-d] [-r] -n {1,2,3} [-l LOOPCOUNT] -c HCN -v VCODE -s SCN -b DOB -p POSTAL [-e EMAIL] [-m CELLPHONE] [-r50] [-r100] [-r200] [-r500]
 
-Ontario vaccine reservation bots.
+Ontario vaccine reservation finder.
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -56,6 +61,49 @@ Note that:
 1. This program is only helping you to scan the system for any availablity with the specific range, however, will NOT reserve the spot for you. In order to complete the reservation, you have to complete the booking by taking over the pop-up chrome browser window, quickly complete the rest of reservation process. 
 2. This scanner can skip the York Region restriction for all Ontarian people to book all vaccine appointment in the entire Ontario province. 
 
+## Silently in a docker container
+To run this program in a docker container, following command can be issued:
+```
+docker run --shm-size="4g" quay.io/joseph_yang_dev/ontario-vaccine-finder <parameters>
+```
+
+Note:
+1. The parameters in the command is 100% the same as those used in the interactive approach. Same result as interactive mode is returned in silent mode.
+2. **--shm-size="4g"** is needed, since the chrome engine consumes a lot of memory. You can adjust a better value according to your machine configuration.
+3. In silent mode, there will be no browser pops up. Hence, you need to open a browser to complete the reservation process after.
+
+Also, only passing **-h** can return all required parameters:
+```
+# docker run -it --shm-size="4g" quay.io/joseph_yang_dev/ontario-vaccine-finder -h
+usage: vaccine-scanner.py [-h] [-d] [-x] [-r] -n {1,2,3} [-l LOOPCOUNT] -c HCN -v VCODE -s SCN -b DOB -p POSTAL [-e EMAIL] [-m CELLPHONE] [-r50] [-r100] [-r200] [-r500]
+
+Ontario vaccine reservation finder.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d, --debug           Turn on debug mode.
+  -x, --headless        Headless execution. Used only for dockerize or running without browser pops.
+  -r, --reschedule      Reschedule existing reservation. Ignore this option if you do NOT have any active reservation (reserved but not completed). In another word, if you are looking for a new vaccine reservation, IGNORE this option.
+  -n {1,2,3}, --number-of-doses {1,2,3}
+                        The does sequence number.
+  -l LOOPCOUNT, --number-of-loops LOOPCOUNT
+                        How many times to scan the reservations.
+  -c HCN, -hcn HCN      Ontario health card number, in "xxxx-xxx-xxx"(10 digits) format.
+  -v VCODE, --vcode VCODE
+                        Ontario health card number verificiation code in "XX"(2 alphabet codes).
+  -s SCN, --scn SCN     Ontario health card security code(can be found in the back) in "XXNNNNNNN"(2 alphabet and 7 digits combination).
+  -b DOB, --dob DOB     Date of birth in "yyyy-mm-dd" format.
+  -p POSTAL, --postal POSTAL
+                        Postal code (match to healthcard) in "A0B-1C3" format.
+  -e EMAIL, --email EMAIL
+                        Email address to receive confimration and notification. Only needed for the fist dose reservation.
+  -m CELLPHONE, --cellphone CELLPHONE
+                        Mobile phone to receive confirmation and notification. Only needed for the fist dose reservation.
+  -r50, --in-50-km      Search with 50KM range.
+  -r100, --in-100-km    Search with 100KM range.
+  -r200, --in-200-km    Search with 200KM range.
+  -r500, --in-500-km    Search with 500KM range.
+```
 # Expected result
 After running the program for a few minutes, a scan result as following example can be harvested from the standard output:
 ```
@@ -85,4 +133,4 @@ This code was just created for instant needs and educational. No warranty, use o
 
 God bless everybody and good luck!
 
-Boxing Day of 2021.
+**Boxing Day of 2021.**

@@ -82,8 +82,9 @@ def summary():
 # initialize
 def init():
   global r, lCount, hcn, dose, vcode, scn, dob, postal, email, cellphone, browser
-  parser = argparse.ArgumentParser(description='Ontario vaccine reservation bots.')
+  parser = argparse.ArgumentParser(description='Ontario vaccine reservation finder.')
   parser.add_argument("-d", "--debug", dest='isDebug', action='store_true', help="Turn on debug mode.")
+  parser.add_argument("-x", "--headless", dest='isHeadless', action='store_true', help="Headless execution. Used only for dockerize or running without browser pops.")
   parser.add_argument("-r", "--reschedule", dest="isReschedule", action='store_true', help="Reschedule existing reservation. Ignore this option if you do NOT have any active reservation (reserved but not completed). In another word, if you are looking for a new vaccine reservation, IGNORE this option.")
   parser.add_argument("-n", "--number-of-doses", type=str, dest="dose", action="store", default="1", choices=["1", "2", "3"], help="The does sequence number.", required=True)
   parser.add_argument("-l", "--number-of-loops", type=int, dest="loopCount", action="store", default="1", help="How many times to scan the reservations.")
@@ -124,6 +125,12 @@ def init():
 
   options = webdriver.ChromeOptions()
   options.add_experimental_option('excludeSwitches', ['enable-logging'])
+  if args.isHeadless:
+    options.add_argument("--no-sandbox")
+    options.add_argument('--headless')
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_experimental_option("useAutomationExtension", False)
+    options.add_argument("--disable-dev-shm-usage")
   browser=webdriver.Chrome(options=options)
   browser.get("https://covid19.ontariohealth.ca/")
 

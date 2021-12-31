@@ -107,21 +107,21 @@ optional arguments:
 # Expected result
 After running the program for a few minutes, a scan result as following example can be harvested from the standard output:
 ```
-INFO:root:###################################################################################################
-INFO:root:Summary:
-INFO:root:>> (HKPR - Lindsay Exhibition (Jan. 24 - 28)): 1 - 1 time slots available. For Wednesday, January 26, 2022
-INFO:root:>> (HKPR - Lindsay Exhibition (Jan. 10 - 16)): 1 - 1 time slots available. For Thursday, January 13, 2022
-INFO:root:>> (HKPR - Lindsay Exhibition (Jan. 17 - 23)): 6 - 50 time slots available. For Tuesday, January 18, 2022
-INFO:root:>> (HKPR - Fenelon Falls Community Centre (Jan. 25 & 26)): 2 - 1 time slots available. For Tuesday, January 25, 2022
-INFO:root:>> (MGH-Shoppers World Danforth (Dec 27 - Jan 2)): 1 - 1 time slots available. For Sunday, January 2, 2022
-INFO:root:>> (SMDHU-Holly Recreation Centre, Community Room (Jan 15-20)): 1 - 1 time slots available. For Tuesday, January 18, 2022
-INFO:root:>> (SMDHU - 29 Sperling Drive Covid-19 Immunization Clinic (Jan 2-Feb 3)): 2 - 1 time slots available. For Monday, January 10, 2022
-INFO:root:>> (TPHU - Woodbine Mall, Inside Hudson's Bay (Jan 20 - Feb 19) Ages 12+): 1 - 1 time slots available. For Tuesday, February 8, 2022
-INFO:root:>> (HKPR - Lindsay Exhibition (Jan. 2 - 9)): 1 - 1 time slots available. For Sunday, January 9, 2022
-INFO:root:>> (HKPR - Fenelon Falls Community Centre (Feb. 1 & 2)): 2 - 19 time slots available. For Tuesday, February 1, 2022
-INFO:root:>> (HKPR - Fenelon Falls Community Centre (Jan. 18 & 19)): 2 - 36 time slots available. For Tuesday, January 18, 2022
-INFO:root:>> (HKPR - Fenelon Falls Community Centre (Jan 11 & 12)): 1 - 1 time slots available. For Tuesday, January 11, 2022
-INFO:root:###################################################################################################
+###################################################################################################
+Summary:
+>> (HKPR - Lindsay Exhibition (Jan. 24 - 28)): 1 - 1 time slots available. For Wednesday, January 26, 2022
+>> (HKPR - Lindsay Exhibition (Jan. 10 - 16)): 1 - 1 time slots available. For Thursday, January 13, 2022
+>> (HKPR - Lindsay Exhibition (Jan. 17 - 23)): 6 - 50 time slots available. For Tuesday, January 18, 2022
+>> (HKPR - Fenelon Falls Community Centre (Jan. 25 & 26)): 2 - 1 time slots available. For Tuesday, January 25, 2022
+>> (MGH-Shoppers World Danforth (Dec 27 - Jan 2)): 1 - 1 time slots available. For Sunday, January 2, 2022
+>> (SMDHU-Holly Recreation Centre, Community Room (Jan 15-20)): 1 - 1 time slots available. For Tuesday, January 18, 2022
+>> (SMDHU - 29 Sperling Drive Covid-19 Immunization Clinic (Jan 2-Feb 3)): 2 - 1 time slots available. For Monday, January 10, 2022
+>> (TPHU - Woodbine Mall, Inside Hudson's Bay (Jan 20 - Feb 19) Ages 12+): 1 - 1 time slots available. For Tuesday, February 8, 2022
+>> (HKPR - Lindsay Exhibition (Jan. 2 - 9)): 1 - 1 time slots available. For Sunday, January 9, 2022
+>> (HKPR - Fenelon Falls Community Centre (Feb. 1 & 2)): 2 - 19 time slots available. For Tuesday, February 1, 2022
+>> (HKPR - Fenelon Falls Community Centre (Jan. 18 & 19)): 2 - 36 time slots available. For Tuesday, January 18, 2022
+>> (HKPR - Fenelon Falls Community Centre (Jan 11 & 12)): 1 - 1 time slots available. For Tuesday, January 11, 2022
+###################################################################################################
 ```
 
 When the program finish running, the scanning browser stay active. You can continue the rest of the reservation by using the scanning browser, all personal information is the same as those in the command line parameters.

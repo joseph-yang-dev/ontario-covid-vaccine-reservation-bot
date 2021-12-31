@@ -56,25 +56,24 @@ def summary():
   for j in range(len(vc)):
     if vcList[j][_key_vacant_days_count] > 0:
       vcs.append(vcList[j])
-  logging.info("\n\n")
-  logging.info("###################################################################################################")
+  print("###################################################################################################")
   if len(vcs)>0:
-    logging.info("Summary: ")
+    print("Summary: ")
     for vc1 in vcs:
-      logging.info(">> {}: {} - {}. {}".format(
+      print(">> {}: {} - {}. {}".format(
         vc1[_key_provider], 
         vc1[_key_vacant_days_count], 
         vc1[_key_slot_text], 
         vc1[_key_slot_start_text]
       ))
   else:
-    logging.info("!!! NO VACCINE AVAILABLE FOR NOW, try again later or enlarge the searching range !!!")
-  logging.info("###################################################################################################")
+    print("!!! NO VACCINE AVAILABLE FOR NOW, try again later or enlarge the searching range !!!")
+  print("###################################################################################################")
   lCount -= 1
   if lCount <= 0:
     quit()
 
-  logging.info("\n\nRescan .... ")
+  logging.info("Rescan .... ")
   vc.clear()
   vcList.clear()
   time.sleep(10)
@@ -85,6 +84,7 @@ def init():
   parser = argparse.ArgumentParser(description='Ontario vaccine reservation finder.')
   parser.add_argument("-d", "--debug", dest='isDebug', action='store_true', help="Turn on debug mode.")
   parser.add_argument("-x", "--headless", dest='isHeadless', action='store_true', help="Headless execution. Used only for dockerize or running without browser pops.")
+  parser.add_argument("--result-only", dest='isResultOnly', action='store_true', help="Only display results.")
   parser.add_argument("-r", "--reschedule", dest="isReschedule", action='store_true', help="Reschedule existing reservation. Ignore this option if you do NOT have any active reservation (reserved but not completed). In another word, if you are looking for a new vaccine reservation, IGNORE this option.")
   parser.add_argument("-n", "--number-of-doses", type=str, dest="dose", action="store", default="1", choices=["1", "2", "3"], help="The does sequence number.", required=True)
   parser.add_argument("-l", "--number-of-loops", type=int, dest="loopCount", action="store", default="1", help="How many times to scan the reservations.")
@@ -106,6 +106,8 @@ def init():
   
   if args.isDebug:
     logging.basicConfig(level=logging.DEBUG)
+  elif args.isResultOnly:
+    logging.basicConfig(level=logging.ERROR)
   else:  
     logging.basicConfig(level=logging.INFO)
   

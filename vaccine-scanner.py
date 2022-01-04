@@ -25,6 +25,8 @@ postal=None
 email=None
 cellphone=None
 
+isReschedule=False
+
 #
 def wait_for_element_by(e_by, e_key):
   while True:
@@ -80,7 +82,7 @@ def summary():
 
 # initialize
 def init():
-  global r, lCount, hcn, dose, vcode, scn, dob, postal, email, cellphone, browser
+  global r, lCount, hcn, dose, vcode, scn, dob, postal, email, cellphone, browser, isReschedule
   parser = argparse.ArgumentParser(description='Ontario vaccine reservation finder.')
   parser.add_argument("-d", "--debug", dest='isDebug', action='store_true', help="Turn on debug mode.")
   parser.add_argument("-x", "--headless", dest='isHeadless', action='store_true', help="Headless execution. Used only for dockerize or running without browser pops.")
@@ -113,6 +115,9 @@ def init():
   
   if args.r != None:
     r=args.r
+  
+  if args.isReschedule:
+    isReschedule=True
   
   lCount=args.loopCount
   
@@ -174,9 +179,17 @@ def navigate():
     browser.find_element(By.ID, 'second_dose_button').click()
   elif dose == '3':
     # 3rd
-    wait_for_element_by(By.ID, 'fld_booking-home_eligibility_group_noGroup_label')
-    browser.find_element(By.ID, 'fld_booking-home_eligibility_group_noGroup_label').click()
-    browser.find_element(By.ID, 'submit_label_schedule').click()
+    if isReschedule:
+      wait_for_element_by(By.ID, 'fld_booking-home_eligibility_group_noGroup_label')
+      browser.find_element(By.ID, 'fld_booking-home_eligibility_group_noGroup_label').click()
+      browser.find_element(By.ID, 'submit_label_schedule').click()
+    else:
+      wait_for_text("COVID-19 vaccine booster dose")
+      wait_for_element_by(By.ID, 'fld_booking-home_isThirdDose_label')
+      browser.find_element(By.ID, 'fld_booking-home_isThirdDose_label').click()
+      browser.find_element(By.ID, 'fld_booking-home_eligibility_group_noGroup_label').click()
+      browser.find_element(By.ID, 'submit_label_schedule').click()
+
   else:
     print("Only allow 1st - 3rd dose booking")
     quit()

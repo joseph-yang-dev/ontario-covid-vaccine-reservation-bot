@@ -1,5 +1,6 @@
 from selenium import webdriver, common
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import WebDriverException
 import time
 import logging
 import os
@@ -192,8 +193,12 @@ def navigate():
       browser.find_element(By.ID, 'submit_label_schedule').click()
     else:
       wait_for_text("COVID-19 vaccine booster dose")
-      wait_for_element_by(By.ID, 'fld_booking-home_isThirdDose_label')
-      browser.find_element(By.ID, 'fld_booking-home_isThirdDose_label').click()
+      try:
+        wait_for_element_by(By.ID, 'fld_booking-home_isThirdDose_label')
+        browser.find_element(By.ID, 'fld_booking-home_isThirdDose_label').click()
+      except WebDriverException:
+        print("You seem have already reserved previously, switch to reschedule mode.")
+      wait_for_element_by(By.ID, 'fld_booking-home_eligibility_group_noGroup_label')
       browser.find_element(By.ID, 'fld_booking-home_eligibility_group_noGroup_label').click()
       browser.find_element(By.ID, 'submit_label_schedule').click()
 

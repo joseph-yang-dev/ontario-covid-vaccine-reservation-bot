@@ -128,11 +128,11 @@ When the program finish running, the scanning browser stay active. You can conti
 
 # Troubleshooting
 
-For Mac user, if see following errors:
+For Mac user, if found following errors:
 ```
 Error: “chromedriver” cannot be opened because the developer cannot be verified. Unable to launch the chrome browser
 ```
-Then you need to follow https://stackoverflow.com/questions/60362018/macos-catalinav-10-15-3-error-chromedriver-cannot-be-opened-because-the-de to resolve the chromedriver installation gap.
+Then you need to follow https://stackoverflow.com/questions/60362018/macos-catalinav-10-15-3-error-chromedriver-cannot-be-opened-because-the-de to configure chromedriver installation in your Mac OS.
 
 # Disclaimer
 This program was created for the need to fight the COVID-19 Omicorn variant. Heard too much news of people suffering when looking for a vaccination opportunity. If this program offends any people or violates any regulation, please open a ticket in https://github.com/joseph-yang-dev/ontario-covid-vaccine-reservation-bot/issues. It will be taken down with no time. 

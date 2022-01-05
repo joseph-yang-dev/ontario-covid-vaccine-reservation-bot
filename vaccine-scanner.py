@@ -26,6 +26,7 @@ email=None
 cellphone=None
 
 isReschedule=False
+delayInterval=3
 
 #
 def wait_for_element_by(e_by, e_key):
@@ -82,7 +83,7 @@ def summary():
 
 # initialize
 def init():
-  global r, lCount, hcn, dose, vcode, scn, dob, postal, email, cellphone, browser, isReschedule
+  global r, lCount, hcn, dose, vcode, scn, dob, postal, email, cellphone, browser, isReschedule, delayInterval
   parser = argparse.ArgumentParser(description='Ontario vaccine reservation finder.')
   parser.add_argument("-d", "--debug", dest='isDebug', action='store_true', help="Turn on debug mode.")
   parser.add_argument("-x", "--headless", dest='isHeadless', action='store_true', help="Headless execution. Used only for dockerize or running without browser pops.")
@@ -104,6 +105,7 @@ def init():
   parser.add_argument("-r100", "--in-100-km", dest="r", action="store_const", const="100", help="Search with 100KM range.")
   parser.add_argument("-r200", "--in-200-km", dest="r", action="store_const", const="200", help="Search with 200KM range.")
   parser.add_argument("-r500", "--in-500-km", dest="r", action="store_const", const="500", help="Search with 500KM range.")
+  parser.add_argument("-w", "--delay-interval", type=int, dest="delayInterval", action="store", default="3", help="Delay interval in seconds between navigating pages. Increse this value can help to avoid crashing during reservation site busy. Default: 3")
   args = parser.parse_args()
   
   if args.isDebug:
@@ -115,7 +117,11 @@ def init():
   
   if args.r != None:
     r=args.r
-  
+
+  if args.delayInterval != None:
+    delayInterval=args.delayInterval  
+
+
   if args.isReschedule:
     isReschedule=True
   
@@ -140,6 +146,7 @@ def init():
     options.add_argument("--disable-dev-shm-usage")
   browser=webdriver.Chrome(options=options)
   browser.get("https://covid19.ontariohealth.ca/")
+  browser.implicitly_wait(10)
 
 # navigate in vaccine reservation website
 def navigate():
@@ -215,7 +222,7 @@ def scan_vaccination():
   # Loop all vaccine providers. 
   # This is a poke & peek process until can not find any more provider, because during navigation the provide list might be changed.
   while True:
-    logging.info("Scanning ...")
+    # logging.info("Scanning ...")
     wait_for_text("Select a Vaccination Centre Location")
   
     # Load all paginated results
@@ -227,10 +234,11 @@ def scan_vaccination():
           wait_for_text("Select a Vaccination Centre Location")
           break
   
+    # wait_for_text("tw-max-w-screen-sm tw-p-6 tw-mx-auto md:tw-px-0 tw-pt-8 tw-prose")
     # Loop all location buttons
     vaccineProviders=browser.find_elements(By.CLASS_NAME, "tw-sr-only")
     entryCount=len(vaccineProviders)
-  
+    logging.info("Found {} potentional locations..".format(entryCount))
     for i in range(entryCount):
       vaccineProvider=vaccineProviders[i]
   
@@ -239,6 +247,7 @@ def scan_vaccination():
     
         if t in vc:
           if i == entryCount-1:
+            print("Ends with found repeat ...")
             summary()
           else:
             continue
@@ -262,7 +271,7 @@ def scan_vaccination():
   
           slotStartElement=browser.find_element(By.CLASS_NAME, "tw-mb-5")
           slotstartText=slotStartElement.text
-          logging.info("+ Found {}: {} day(s) has {}. {}".format(t, cnt, slotText, slotstartText))
+          logging.info("+ Discover {}: {} day(s) has {}. {}".format(t, cnt, slotText, slotstartText))
           
           vc.append(t)
           vcList.append({
@@ -271,15 +280,22 @@ def scan_vaccination():
             _key_slot_text: slotText,
             _key_slot_start_text: slotstartText
           })
-      
-          browser.back()
-          time.sleep(2)
+
+          for btn in browser.find_elements(By.TAG_NAME, "button"):
+            if btn.get_attribute("data-testid")=="back-button":
+              btn.click()
+              time.sleep(delayInterval)
+              break                            
+          # browser.back()
+          # time.sleep(5)
   
           if i == entryCount-1:
+            logging.debug("Ends with found all location navigated ...")
             summary()
           break
       else:
         if i == entryCount-1:
+          logging.debug("Ends with found redirection...")
           summary()
 
 # main process

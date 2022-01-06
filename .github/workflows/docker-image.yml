@@ -17,5 +17,7 @@ jobs:
         DOCKER_USER: ${{secrets.QUAYIO_USER}}
         DOCKER_PASS: ${{secrets.QUAYIO_PASS}}
       run: |
+        export DOCKER_TAG=$(date +%s)
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS" quay.io
-        docker build . --file Dockerfile --tag quay.io/joseph_yang_dev/ontario-vaccine-finder:$(date +%s)
+        docker build . --file Dockerfile --tag quay.io/joseph_yang_dev/ontario-vaccine-finder:$DOCKER_TAG
+        docker push quay.io/joseph_yang_dev/ontario-vaccine-finder:$DOCKER_TAG

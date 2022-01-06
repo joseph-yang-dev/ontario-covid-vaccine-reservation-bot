@@ -128,6 +128,13 @@ When the program finish running, the scanning browser stay active. You can conti
 
 # Troubleshooting
 
+## Increase waiting delay between scanning
+This program is running directly toward the live Ontario Vaccination Reservation system, during peak time, network traffic or host system processing delay, very likely this program can return only ONE discovery result, and showing following message above the **Summary** section:
+```
+INFO:root:Found 5 potentional locations..
+```
+In this case, you might want to increase the discovery waiting delay value by appending "-w DELAYINTERVAL" parameter. Typically, setting DELAYINTERVAL to "5" (seconds), e.g. **-w 5** will get a better results. This vaule can be adjust depends on your network connectivity speed, the bigger number to set to this value, the total discovery period will be longer. 
+## Mac User running in interactive mode
 For Mac user, if found following errors:
 ```
 Error: “chromedriver” cannot be opened because the developer cannot be verified. Unable to launch the chrome browser

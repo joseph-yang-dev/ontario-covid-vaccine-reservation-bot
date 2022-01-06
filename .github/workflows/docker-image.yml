@@ -16,8 +16,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       env:
-        DOCKER_USER: ${{env1.QUAYIO_USER}}
-        DOCKER_PASS: ${{env1.QUAYIO_PASS}}
+        DOCKER_USER: ${{env.QUAYIO_USER}}
+        DOCKER_PASS: ${{env.QUAYIO_PASS}}
       run: |
         docker login -u="$DOCKER_USER" -p="$DOCKER_PASS" quay.io
         docker build . --file Dockerfile --tag quay.io/joseph_yang_dev/ontario-vaccine-finder:$(date +%s)

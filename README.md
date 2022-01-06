@@ -1,5 +1,5 @@
 # Overview 
-This is a crawler robot program used to scan Canada Ontario provincal COVID-19 Vaccine revervation system, obtain the most recent available slot for the people who are ellegible for Ontario's vaccination program. Hope this small program gives people to relief to the threat of COVID-19 and a healthy, happy life. 
+This is a crawler robot program used to scan Canada Ontario provincal COVID-19 Vaccine revervation system(https://covid19.ontariohealth.ca/), obtain the most recent available slot for the people who are ellegible for Ontario's vaccination program. Hope this small program gives people to relief to the threat of COVID-19 and a healthy, happy life. 
 
 Note that this program uses regular and legal web interface to access the reservation system and simulates normal browsing behaviors. However, if you have found your expected reservation, please stop running it to give out access bandwidth to others. 
 
@@ -12,7 +12,7 @@ This program is only tested in a Windows environment. To run this program, you n
 - python selenium module: https://selenium-python.readthedocs.io/installation.html
 
 ## Silently
-This program is also dockerized. All you need is a docker engine capable of running x86 Linux docker images. No additional dependent softare is required to run this program silently.
+This program is also dockerized. All you need is a docker engine capable of running x86 Linux docker images. No additional dependent software is required to run this program silently.
 
 # Usage
 ## Interactively
